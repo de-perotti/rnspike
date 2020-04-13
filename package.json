@@ -51,6 +51,24 @@
         "device": {
           "adbName": "HSMDU17A25000620"
         }
+      },
+      "ios.sim.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/rnspike.app",
+        "build": "xcodebuild -workspace ios/rnspike.xcworkspace -scheme rnspike -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 11 Pro",
+          "os": "iOS 13.1"
+        }
+      },
+      "ios.sim.release": {
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/rnspike.app",
+        "build": "xcodebuild -workspace ios/rnspike.xcworkspace -scheme rnspike -sdk iphonesimulator -derivedDataPath ios/build",
+        "type": "ios.simulator",
+        "device": {
+          "type": "iPhone 11 Pro",
+          "os": "iOS 13.1"
+        }
       }
     },
     "test-runner": "jest"
