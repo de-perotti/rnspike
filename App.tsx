@@ -8,8 +8,9 @@
  * @format
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  TextInput,
   SafeAreaView,
   StyleSheet,
   ScrollView,
@@ -29,6 +30,8 @@ import {
 declare var global: {HermesInternal: null | {}};
 
 const App = () => {
+  const [value, setValue] = useState('');
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -42,6 +45,8 @@ const App = () => {
               <Text style={styles.footer}>Engine: Hermes</Text>
             </View>
           )}
+          <TextInput value={value} placeholder="placeholderlol" onChangeText={setValue} testID="rolezao-text" />
+          <Text testID="rolezao-value">{value}</Text>
           <View style={styles.body}>
             <View style={styles.sectionContainer} testID="rolezao">
               <Text style={styles.sectionTitle}>Step One</Text>
