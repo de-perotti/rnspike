@@ -1,13 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React, { useState } from 'react';
 import {
   TextInput,
@@ -26,6 +16,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { Button } from './app/components/button';
 
 declare var global: {HermesInternal: null | {}};
 
@@ -46,6 +37,7 @@ const App = () => {
             </View>
           )}
           <TextInput value={value} placeholder="placeholderlol" onChangeText={setValue} testID="rolezao-text" />
+          <Button title="Rolezao" onPress={console.log} />
           <Text testID="rolezao-value">{value}</Text>
           <View style={styles.body}>
             <View style={styles.sectionContainer} testID="rolezao">
