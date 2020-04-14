@@ -23,5 +23,8 @@ module.exports = {
   ],
   transformIgnorePatterns: ['/node_modules/(?!react-navigation)/'],
   snapshotResolver: './jest.snapshot.resolver.js',
-  setupFilesAfterEnv: ['@testing-library/react-native/cleanup-after-each'],
+  setupFilesAfterEnv: [
+    '@testing-library/react-native/cleanup-after-each',
+    './testSetup.ts',
+  ],
 };
