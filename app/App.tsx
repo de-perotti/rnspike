@@ -6,8 +6,6 @@ import {
   ScrollView,
   View,
   Text,
-  StatusBar,
-  Platform,
 } from 'react-native';
 
 import {
@@ -17,17 +15,16 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import { Button } from './app/components/button';
+import { Button } from './components/button';
 
 declare var global: { HermesInternal: null | {} };
 
-const App = () => {
+function App() {
   const [value, setValue] = useState('');
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView style={styles.safeArea}>
+      <SafeAreaView>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}
@@ -81,11 +78,6 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: 'white',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
   scrollView: {
     backgroundColor: Colors.lighter,
   },
