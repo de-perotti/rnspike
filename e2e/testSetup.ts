@@ -1,10 +1,14 @@
-const detox = require('detox');
+const handler = require('detox');
 const config = require('../package.json').detox;
 const adapter = require('detox/runners/jest/adapter');
 const specReporter = require('detox/runners/jest/specReporter');
 
 // Set the default timeout
 jest.setTimeout(120000);
+
+declare namespace jasmine {
+  function getEnv(): { addReporter(x: any): void };
+}
 
 jasmine.getEnv().addReporter(adapter);
 
@@ -13,7 +17,7 @@ jasmine.getEnv().addReporter(adapter);
 jasmine.getEnv().addReporter(specReporter);
 
 beforeAll(async () => {
-  await detox.init(config);
+  await handler.init(config);
 }, 300000);
 
 beforeEach(async () => {
@@ -26,12 +30,12 @@ beforeEach(async () => {
     // in that emergency case and disable calling 'device', 'element', 'expect', 'by' and other Detox globals.
     // If you switch to 'jest-circus' runner, you can omit this try-catch workaround at all.
 
-    await detox.cleanup();
+    await handler.cleanup();
     throw err;
   }
 });
 
 afterAll(async () => {
   await adapter.afterAll();
-  await detox.cleanup();
+  await handler.cleanup();
 });
