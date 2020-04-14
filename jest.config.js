@@ -9,8 +9,11 @@ module.exports = {
   preset: '@testing-library/react-native',
   haste: {
     defaultPlatform: process.env.PLATFORM,
-    platforms: ['android', 'ios', 'native'],
-    providesModuleNodeModules: ['react-native'],
+    platforms:
+      process.env.PLATFORM === 'android'
+        ? ['android', 'native']
+        : ['ios', 'native'],
+    // providesModuleNodeModules: ['react-native'],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testPathIgnorePatterns: [
@@ -19,4 +22,6 @@ module.exports = {
     process.env.PLATFORM === 'android' ? '.*\\.ios\\..*' : '.*\\.android\\..*',
   ],
   transformIgnorePatterns: ['/node_modules/(?!react-navigation)/'],
+  snapshotResolver: './jest.snapshot.resolver.js',
+  setupFilesAfterEnv: ['@testing-library/react-native/cleanup-after-each'],
 };

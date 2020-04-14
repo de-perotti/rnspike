@@ -4,15 +4,15 @@ describe('Example', () => {
   });
 
   it('should have welcome screen', async () => {
-    await expect(await element(by.id('rolezao'))).toBeVisible();
+    await expect(element(by.id('rolezao'))).toBeVisible();
   });
 
   it('should be possible to write to screen', async () => {
-    const input = await element(by.id('rolezao-text'));
+    const input = element(by.id('rolezao-text'));
     await expect(input).toBeVisible();
     await input.typeText('um role');
 
-    const textValue = await element(by.id('rolezao-value'));
+    const textValue = element(by.id('rolezao-value'));
     await expect(textValue).toHaveText('um role');
   });
 });
