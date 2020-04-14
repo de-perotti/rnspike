@@ -7,6 +7,7 @@ import {
   View,
   Text,
   StatusBar,
+  Platform,
 } from 'react-native';
 
 import {
@@ -18,7 +19,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { Button } from './app/components/button';
 
-declare var global: {HermesInternal: null | {}};
+declare var global: { HermesInternal: null | {} };
 
 const App = () => {
   const [value, setValue] = useState('');
@@ -26,17 +27,23 @@ const App = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
+      <SafeAreaView style={styles.safeArea}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
+          style={styles.scrollView}
+        >
           <Header />
           {global.HermesInternal == null ? null : (
             <View style={styles.engine}>
               <Text style={styles.footer}>Engine: Hermes</Text>
             </View>
           )}
-          <TextInput value={value} placeholder="placeholderlol" onChangeText={setValue} testID="rolezao-text" />
+          <TextInput
+            value={value}
+            placeholder="placeholderlol"
+            onChangeText={setValue}
+            testID="rolezao-text"
+          />
           <Button title="Rolezao" onPress={console.log} />
           <Text testID="rolezao-value">{value}</Text>
           <View style={styles.body}>
@@ -74,6 +81,11 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+  },
   scrollView: {
     backgroundColor: Colors.lighter,
   },
