@@ -3,53 +3,39 @@ import { LayoutRoot } from 'react-native-navigation';
 
 export const DefaultRoot: LayoutRoot = {
   root: {
-    bottomTabs: {
-      children: [
-        {
-          stack: {
-            children: [
-              {
-                component: {
-                  id: 'one',
-                  name: Screen.WELCOME,
-                  options: {
-                    topBar: {
-                      title: {
-                        text: 'Home',
-                      },
+    sideMenu: {
+      right: {
+        component: {
+          name: Screen.SIDE_MENU,
+        },
+      },
+      left: {
+        component: {
+          name: Screen.SIDE_MENU,
+        },
+      },
+      center: {
+        stack: {
+          children: [
+            {
+              component: {
+                id: 'one',
+                name: Screen.WELCOME,
+                options: {
+                  topBar: {
+                    title: {
+                      text: 'Home',
                     },
-                    bottomTab: {
-                      text: 'First',
-                    },
+                  },
+                  bottomTab: {
+                    text: 'First',
                   },
                 },
               },
-            ],
-          },
+            },
+          ],
         },
-        {
-          stack: {
-            children: [
-              {
-                component: {
-                  id: 'another',
-                  name: Screen.WELCOME,
-                  options: {
-                    topBar: {
-                      title: {
-                        text: 'Home',
-                      },
-                    },
-                    bottomTab: {
-                      text: 'Second',
-                    },
-                  },
-                },
-              },
-            ],
-          },
-        },
-      ],
+      },
     },
   },
 };
