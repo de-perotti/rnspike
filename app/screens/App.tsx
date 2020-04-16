@@ -1,183 +1,150 @@
-import React from 'react';
-import { TextInput, StyleSheet, ScrollView, View, Text, NativeEventSubscription } from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import { Button } from '../components/button';
+import React, { useMemo, useState } from 'react';
+import { ScrollView, View, Text, Platform } from 'react-native';
 import {
   ComponentDidAppearEvent,
   ComponentDidDisappearEvent,
   Navigation,
+  NavigationButtonPressedEvent,
 } from 'react-native-navigation';
-import { Screen } from '../navigation/constants';
+import { EventListeners, useScreenEvents } from '../navigation/hooks';
+import { Button } from '../components/button';
+import { useSelector } from 'react-redux';
+import { AppState } from '../store/store';
 
-declare var global: { HermesInternal: null | {} };
+export const App = (props: any) => {
+  const { isForeground, isInitialized } = useSelector(
+    (state: AppState) => state.app,
+  );
+  const [paddingTop, setPaddingTop] = useState(0);
+  const listeners: EventListeners = useMemo(
+    () => ({
+      navigationButtonPressed(e: NavigationButtonPressedEvent) {
+        console.log('buttotn pressed', e);
+      },
+      componentDidDisappear(e: ComponentDidDisappearEvent) {
+        console.log('aaaai lmaoo disappear', e);
+      },
+      componentDidAppear(e: ComponentDidAppearEvent) {
+        console.log('lmao appear', e);
+      },
+    }),
+    [],
+  );
 
-class App extends React.Component<any, any> {
-  state = { value: '' };
-  listener?: NativeEventSubscription;
+  useScreenEvents(listeners, props.componentId);
 
-  componentDidMount(): void {
-    this.listener = Navigation.events().bindComponent(this);
-  }
-
-  componentWillUnmount(): void {
-    this.listener?.remove();
-  }
-
-  componentDidDisappear(e: ComponentDidDisappearEvent) {
-    console.log(e);
-  }
-
-  componentDidAppear(e: ComponentDidAppearEvent) {
-    console.log(e);
-  }
-
-  render() {
-    return (
-      <>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}
-        >
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <TextInput
-            value={this.state.value}
-            placeholder="placeholderlol"
-            onChangeText={(value) => this.setState({ value })}
-            testID="rolezao-text"
-          />
-          <Button
-            title="Rolezao"
-            onPress={() =>
-              Navigation.push(this.props.componentId, {
-                component: {
-                  name: Screen.WELCOME_2,
-                  passProps: {
-                    value: this.state.value,
-                  },
-                  options: {
-                    animations: {
-                      push: {
-                        elementTransitions: [
-                          {
-                            id: 'slowfadein',
-                            alpha: {
-                              from: 0, // We don't declare 'to' value as that is the element's current alpha value, here we're essentially animating from 0 to 1
-                              duration: 2000,
-                              interpolation: 'decelerateAccelerate',
-                            },
-                            translationY: {
-                              from: 16, // Animate translationY from 16dp to 0dp
-                              duration: 2000,
-                              interpolation: 'decelerateAccelerate',
-                            },
-                          },
-                        ],
-                        sharedElementTransitions: [
-                          {
-                            fromId: 'rolezaodeorigem',
-                            toId: 'rolezaodedestino',
-                            interpolation: 'accelerateDecelerate',
-                            duration: 2000,
-                          },
-                        ],
-                      },
+  return (
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      style={{ paddingTop: Platform.OS === 'android' ? paddingTop : 0 }}
+    >
+      <View>
+        <Text>isForeground: {String(isForeground)}</Text>
+        <Text>isInitialized: {String(isInitialized)}</Text>
+        <Button
+          title="Modify topbar"
+          onPress={() => {
+            Navigation.constants().then(({ topBarHeight }) => {
+              setPaddingTop(topBarHeight);
+              Navigation.mergeOptions(props.componentId, {
+                topBar: {
+                  drawBehind: true,
+                  hideOnScroll: true,
+                  rightButtons: [
+                    {
+                      text: 'Clickme',
+                      id: 'buttonid',
                     },
-                    topBar: {
-                      title: {
-                        text: 'ROLEZAO de destino',
-                      },
-                    },
-                  },
+                  ],
                 },
-              })
-            }
-          />
-          <Text testID="rolezao-value" nativeID="rolezaodeorigem">
-            {this.state.value}
-          </Text>
-          <View style={styles.body}>
-            <View style={styles.sectionContainer} testID="rolezao">
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change
-                this screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
-
-export default App;
+              });
+            });
+          }}
+        />
+      </View>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+      <Text>Something</Text>
+    </ScrollView>
+  );
+};

@@ -1,5 +1,5 @@
 import { Navigation } from 'react-native-navigation';
-import { screens } from '../screens';
+import { screens } from '../Screens';
 
 export async function registerScreens() {
   screens.forEach(([name, component, provider]) => {

@@ -1,4 +1,4 @@
-import { AnyAction, Action } from 'redux';
+import { AnyAction } from 'redux';
 
 const APP_SET_STATE = '[APP] Set State';
 
