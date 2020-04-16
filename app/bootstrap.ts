@@ -6,13 +6,12 @@ import { AppState } from './store/store';
 
 export async function bootstrap() {
   const {
-    app: { isInitialized, isForeground },
+    app: { isInitialized },
   }: AppState = store.getState();
-  console.log('bootstrap', { isInitialized, isForeground });
 
   if (!isInitialized) {
     store.runSaga(rootSaga);
-    store.dispatch(setAppState({ isInitialized: true, isForeground: true }));
+    store.dispatch(setAppState({ isInitialized: true }));
   }
 
   await navigationBootstrap();
