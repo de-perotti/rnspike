@@ -15,7 +15,8 @@ function* announcementFinishedWorker({
 }
 
 export function* accessibilityAnnouncementFinishedSaga() {
-  const SAGA_ANNOUNCEMENT_FINISHED_CHANGED = '[Saga] Announcement Finished Changed';
+  const SAGA_ANNOUNCEMENT_FINISHED_CHANGED =
+    '[Saga] Announcement Finished Changed';
 
   if (Platform.OS === 'ios') {
     yield takeEvery<{

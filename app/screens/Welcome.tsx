@@ -21,7 +21,7 @@ export const Welcome = (props: any) => {
     () => ({
       navigationButtonPressed(e: NavigationButtonPressedEvent) {
         console.log('buttotn pressed', e);
-        setPressed(p => p + 1);
+        setPressed((p) => p + 1);
       },
       componentDidDisappear(e: ComponentDidDisappearEvent) {
         console.log('aaaai lmaoo disappear', e);
