@@ -37,6 +37,7 @@ export const Welcome = (props: any) => {
 
   return (
     <ScrollView
+      testID="rolezao"
       contentInsetAdjustmentBehavior="automatic"
       style={{ paddingTop: Platform.OS === 'android' ? paddingTop : 0 }}
     >
