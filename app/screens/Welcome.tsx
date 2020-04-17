@@ -14,6 +14,7 @@ import { useOrientation } from '../hooks/useOrientation';
 import { useIntl } from 'react-intl';
 import { LocalizeList } from '../components/Localize';
 import { setAppState } from '../store/app.duck';
+import { Languages } from '../translations';
 
 export const Welcome = (props: any) => {
   const { isForeground, isInitialized } = useSelector(
@@ -53,8 +54,16 @@ export const Welcome = (props: any) => {
       }}
     >
       <View>
-        <Button title={intl.formatMessage({ id: 'i18n.lang.portuguese' })} onPress={() => dispatch(setAppState({ locale: 'pt' }))}/>
-        <Button title={intl.formatMessage({ id: 'i18n.lang.english' })} onPress={() => dispatch(setAppState({ locale: 'en' }))}/>
+        <Button
+          title={intl.formatMessage({ id: 'i18n.lang.portuguese' })}
+          onPress={() =>
+            dispatch(setAppState({ locale: Languages.PORTUGUESE }))
+          }
+        />
+        <Button
+          title={intl.formatMessage({ id: 'i18n.lang.english' })}
+          onPress={() => dispatch(setAppState({ locale: Languages.ENGLISH }))}
+        />
         <Text>paddingTop: {paddingTop}</Text>
         <Text>orientation: {orientation}</Text>
         <Text>pressed: {pressed}</Text>

@@ -1,3 +1,2 @@
-import { bootstrap } from './app/bootstrap';
-
-bootstrap();
+require('./app/polyfills/intl').polyfillIntl();
+require('./app/bootstrap').bootstrap();
