@@ -10,6 +10,7 @@ import { EventListeners, useScreenEvents } from '../navigation/hooks';
 import { Button } from '../components/button';
 import { useSelector } from 'react-redux';
 import { AppState } from '../store/store';
+import { useOrientation } from '../hooks/useOrientation';
 
 export const Welcome = (props: any) => {
   const { isForeground, isInitialized } = useSelector(
@@ -35,6 +36,8 @@ export const Welcome = (props: any) => {
 
   useScreenEvents(listeners, props.componentId);
 
+  const orientation = useOrientation();
+
   return (
     <ScrollView
       testID="rolezao"
@@ -42,6 +45,7 @@ export const Welcome = (props: any) => {
       style={{ paddingTop: Platform.OS === 'android' ? paddingTop : 0 }}
     >
       <View>
+        <Text>orientation: {orientation}</Text>
         <Text>pressed: {pressed}</Text>
         <Text>isForeground: {String(isForeground)}</Text>
         <Text>isInitialized: {String(isInitialized)}</Text>
