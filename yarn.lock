@@ -700,7 +700,7 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@formatjs/intl-displaynames@^1.2.4":
+"@formatjs/intl-displaynames@^1.2.4", "@formatjs/intl-displaynames@~1.2.4":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-displaynames/-/intl-displaynames-1.2.4.tgz#c9fffd19cd8a69bab202b2db90ded00c7b85093a"
   integrity sha512-c9Wv/TJLrdQJvrR6NbF63ZMNHE2IVCuxwo4riVLb3YmvR6yK6dI5BT3tdLBvtg5oCY/MECx3O2UirmfQjWf1mA==
@@ -714,7 +714,14 @@
   dependencies:
     "@formatjs/intl-utils" "^2.2.2"
 
-"@formatjs/intl-relativetimeformat@^4.5.12":
+"@formatjs/intl-pluralrules@~1.5.5":
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-pluralrules/-/intl-pluralrules-1.5.5.tgz#1127d50965c5c8983845a6e9f579f86f45c51208"
+  integrity sha512-GxCYbTLvlXuS6fM2IBLaVhUsINz0d1ou7f5xdbBBrm2MwbyD6rC7K8pOIIIuv97p4RsQ3twa8umI6/6P0T1/2Q==
+  dependencies:
+    "@formatjs/intl-utils" "^2.2.2"
+
+"@formatjs/intl-relativetimeformat@^4.5.12", "@formatjs/intl-relativetimeformat@~4.5.12":
   version "4.5.12"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-relativetimeformat/-/intl-relativetimeformat-4.5.12.tgz#2d2365f62c15524a40b63627cd62924f6196dd4e"
   integrity sha512-Fh57ZnwOgAIA61i3BQhTb8C8OrCP1zDLQ35xzJ7yv/UiDDExAS8rQPf80+7Hu/8+kydL1DDgVY1PXvE63fxF+Q==
@@ -2258,6 +2265,11 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
+date-time-format-timezone@~1.0.22:
+  version "1.0.22"
+  resolved "https://registry.yarnpkg.com/date-time-format-timezone/-/date-time-format-timezone-1.0.22.tgz#6bb4713aac3bf36338738b59c374583cfcbe6246"
+  integrity sha512-4hEeKPpNlbFO05ldht9FwJEy2g1xL7kU3dTPY5hNSd1AyMjrrIeUS54kSWgt/KdttYshhjDMIonU+vCmL4NjVw==
+
 dayjs@^1.8.15:
   version "1.8.24"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.24.tgz#2ef8a2ab9425eaf3318fe78825be1c571027488d"
@@ -3473,6 +3485,11 @@ intl-messageformat@^8.3.6:
   dependencies:
     intl-format-cache "^4.2.24"
     intl-messageformat-parser "^4.1.4"
+
+intl@~1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/intl/-/intl-1.2.5.tgz#82244a2190c4e419f8371f5aa34daa3420e2abde"
+  integrity sha1-giRKIZDE5Bn4Nx9ao02qNCDiq94=
 
 invariant@^2.2.4:
   version "2.2.4"
