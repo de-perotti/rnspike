@@ -52,6 +52,33 @@
     "typescript": "~3.8.3"
   },
   "detox": {
+    "artifacts": {
+      "rootDir": ".artifacts",
+      "plugins": {
+        "instruments": {
+          "enabled": false
+        },
+        "log": {
+          "enabled": true
+        },
+        "screenshot": {
+          "shouldTakeAutomaticSnapshots": true,
+          "keepOnlyFailedTestsArtifacts": true,
+          "takeWhen": {
+            "testStart": false,
+            "testDone": true
+          }
+        },
+        "video": {
+          "android": {
+            "bitRate": 4000000
+          },
+          "simulator": {
+            "codec": "hevc"
+          }
+        }
+      }
+    },
     "configurations": {
       "android.device.release": {
         "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
