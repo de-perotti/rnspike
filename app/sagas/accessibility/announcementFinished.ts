@@ -6,8 +6,6 @@ import {
 } from 'react-native';
 import { store } from '../../store';
 
-const SAGA_ANNOUNCEMENT_FINISHED_CHANGED = '[Saga] Announcement Finished Changed';
-
 function* announcementFinishedWorker({
   payload,
 }: {
@@ -17,6 +15,8 @@ function* announcementFinishedWorker({
 }
 
 export function* accessibilityAnnouncementFinishedSaga() {
+  const SAGA_ANNOUNCEMENT_FINISHED_CHANGED = '[Saga] Announcement Finished Changed';
+
   if (Platform.OS === 'ios') {
     yield takeEvery<{
       type: typeof SAGA_ANNOUNCEMENT_FINISHED_CHANGED;

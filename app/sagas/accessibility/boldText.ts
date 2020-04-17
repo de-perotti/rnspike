@@ -2,13 +2,13 @@ import { takeEvery } from 'redux-saga/effects';
 import { AccessibilityInfo, Platform } from 'react-native';
 import { store } from '../../store';
 
-const SAGA_BOLD_TEXT_CHANGED = '[Saga] Bold Text Changed';
-
 function* boldTextChangedWorker({ payload }: { payload: boolean }) {
   console.log('boldTextChanged', payload);
 }
 
 export function* accessibilityBoldTextChangedSaga() {
+  const SAGA_BOLD_TEXT_CHANGED = '[Saga] Bold Text Changed';
+
   if (Platform.OS === 'ios') {
     yield takeEvery<{
       type: typeof SAGA_BOLD_TEXT_CHANGED;

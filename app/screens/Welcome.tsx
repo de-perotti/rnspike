@@ -11,7 +11,7 @@ import { Button } from '../components/button';
 import { useSelector } from 'react-redux';
 import { AppState } from '../store/store';
 
-export const App = (props: any) => {
+export const Welcome = (props: any) => {
   const { isForeground, isInitialized } = useSelector(
     (state: AppState) => state.app,
   );

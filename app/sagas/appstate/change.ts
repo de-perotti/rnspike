@@ -3,8 +3,6 @@ import { store } from '../../store';
 import { put, takeEvery } from 'redux-saga/effects';
 import { setAppState } from '../../store/app.duck';
 
-const SAGA_APP_STATE_CHANGED = '[Saga] App State Changed';
-
 type AppStates = 'active' | 'inactive' | 'background';
 
 function* appChangeWorker({ payload }: { payload: AppStates }) {
@@ -25,6 +23,8 @@ function* appChangeWorker({ payload }: { payload: AppStates }) {
 }
 
 export function* appChangeSaga() {
+  const SAGA_APP_STATE_CHANGED = '[Saga] App State Changed';
+
   yield takeEvery<{
     type: typeof SAGA_APP_STATE_CHANGED;
     payload: AppStates;

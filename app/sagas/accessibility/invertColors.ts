@@ -2,13 +2,13 @@ import { takeEvery } from 'redux-saga/effects';
 import { AccessibilityInfo, Platform } from 'react-native';
 import { store } from '../../store';
 
-const SAGA_INVERT_COLORS_CHANGED = '[Saga] Invert Colors Changed';
-
 function* invertColorsChangedWorker({ payload }: { payload: boolean }) {
   console.log('invertColors', payload);
 }
 
 export function* accessibilityInvertColorsChangedSaga() {
+  const SAGA_INVERT_COLORS_CHANGED = '[Saga] Invert Colors Changed';
+
   if (Platform.OS === 'ios') {
     yield takeEvery<{
       type: typeof SAGA_INVERT_COLORS_CHANGED;

@@ -2,13 +2,13 @@ import { takeEvery } from 'redux-saga/effects';
 import { AccessibilityInfo, Platform } from 'react-native';
 import { store } from '../../store';
 
-const SAGA_GRAYSCALE_CHANGED = '[Saga] Grayscale Changed';
-
 function* grayscaleChangedWorker({ payload }: { payload: boolean }) {
   console.log('grayscale', payload);
 }
 
 export function* accessibilityGrayscaleChangedSaga() {
+  const SAGA_GRAYSCALE_CHANGED = '[Saga] Grayscale Changed';
+
   if (Platform.OS === 'ios') {
     yield takeEvery<{
       type: typeof SAGA_GRAYSCALE_CHANGED;

@@ -10,13 +10,14 @@ export const screens: Array<
   [
     Screen.WELCOME,
     () => (props: any) => {
-      const { App } = require('../screens/App');
+      const { Welcome } = require('../screens/Welcome');
+
       return (
         <Provider>
-          <App {...props} />
+          <Welcome {...props} />
         </Provider>
       );
     },
-    () => require('../screens/App').App,
+    () => require('../screens/Welcome').Welcome,
   ],
 ];
