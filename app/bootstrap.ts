@@ -11,7 +11,6 @@ export async function bootstrap() {
 
   if (!isInitialized) {
     store.runSaga(rootSaga);
-    store.dispatch(setAppState({ isInitialized: true }));
   }
 
   await navigationBootstrap();

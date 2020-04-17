@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 
-const APP_SET_STATE = '[APP] Set State';
+export const APP_SET_STATE = '[APP] Set State';
 
 type State = {
   isInitialized: boolean;

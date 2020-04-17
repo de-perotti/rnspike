@@ -15,11 +15,13 @@ export const App = (props: any) => {
   const { isForeground, isInitialized } = useSelector(
     (state: AppState) => state.app,
   );
+  const [pressed, setPressed] = useState(0);
   const [paddingTop, setPaddingTop] = useState(0);
   const listeners: EventListeners = useMemo(
     () => ({
       navigationButtonPressed(e: NavigationButtonPressedEvent) {
         console.log('buttotn pressed', e);
+        setPressed(p => p + 1);
       },
       componentDidDisappear(e: ComponentDidDisappearEvent) {
         console.log('aaaai lmaoo disappear', e);
@@ -39,6 +41,7 @@ export const App = (props: any) => {
       style={{ paddingTop: Platform.OS === 'android' ? paddingTop : 0 }}
     >
       <View>
+        <Text>pressed: {pressed}</Text>
         <Text>isForeground: {String(isForeground)}</Text>
         <Text>isInitialized: {String(isInitialized)}</Text>
         <Button
@@ -62,89 +65,6 @@ export const App = (props: any) => {
           }}
         />
       </View>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
-      <Text>Something</Text>
     </ScrollView>
   );
 };

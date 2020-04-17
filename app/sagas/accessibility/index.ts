@@ -1,4 +1,4 @@
-import { all } from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
 import { accessibilityAnnouncementFinishedSaga } from './announcementFinished';
 import { accessibilityBoldTextChangedSaga } from './boldText';
 import { accessibilityGrayscaleChangedSaga } from './grayscale';
@@ -9,12 +9,12 @@ import { accessibilityScreenReaderChangedSaga } from './screenReader';
 
 export function* accessibilitySagas() {
   yield all([
-    accessibilityAnnouncementFinishedSaga(),
-    accessibilityBoldTextChangedSaga(),
-    accessibilityGrayscaleChangedSaga(),
-    accessibilityInvertColorsChangedSaga(),
-    accessibilityReduceMotionChangedSaga(),
-    accessibilityReduceTransparencyChangedSaga(),
-    accessibilityScreenReaderChangedSaga(),
+    fork(accessibilityAnnouncementFinishedSaga),
+    fork(accessibilityBoldTextChangedSaga),
+    fork(accessibilityGrayscaleChangedSaga),
+    fork(accessibilityInvertColorsChangedSaga),
+    fork(accessibilityReduceMotionChangedSaga),
+    fork(accessibilityReduceTransparencyChangedSaga),
+    fork(accessibilityScreenReaderChangedSaga),
   ]);
 }
