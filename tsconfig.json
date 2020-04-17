@@ -3,7 +3,10 @@
     "target": "esnext",
     "module": "commonjs",
     "lib": [
-      "es6"
+      "es6",
+      "esnext.intl",
+      "es2017.intl",
+      "es2018.intl"
     ],
     "allowJs": true,
     "jsx": "react-native",
