@@ -1,7 +1,6 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-community/async-storage';
 import { persistReducer, persistStore, PERSIST } from 'redux-persist';
-import logger from 'redux-logger';
 import createSagaMiddleware, { SagaMiddlewareOptions } from 'redux-saga';
 import { rootReducer as reducer } from './reducer';
 
@@ -15,7 +14,6 @@ const persistConfig = {
 function initializeStore(options?: SagaMiddlewareOptions) {
   const saga = createSagaMiddleware(options);
   const middleware = [
-    logger,
     saga,
     ...getDefaultMiddleware({
       serializableCheck: { ignoredActions: [PERSIST] },

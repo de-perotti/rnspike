@@ -1,0 +1,7 @@
+{
+  "screen.welcome.button.modify.topbar": "Modify top bar",
+  "intl.text.display.show": "Click more {amountLeft} {amountLeft, plural, one {time} other {times} }",
+  "intl.text.display.hide": "Hide informations",
+  "i18n.lang.portuguese": "Portuguese",
+  "i18n.lang.english": "English"
+}

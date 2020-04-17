@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentProvider } from 'react-native';
 import { Screen } from './constants';
-import { Provider } from '../Provider';
+import { AppProvider } from '../AppProvider';
 
 export const screens: Array<
   | [string | number, ComponentProvider]
@@ -13,9 +13,9 @@ export const screens: Array<
       const { Welcome } = require('../screens/Welcome');
 
       return (
-        <Provider>
+        <AppProvider>
           <Welcome {...props} />
-        </Provider>
+        </AppProvider>
       );
     },
     () => require('../screens/Welcome').Welcome,

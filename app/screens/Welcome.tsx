@@ -8,9 +8,12 @@ import {
 } from 'react-native-navigation';
 import { EventListeners, useScreenEvents } from '../navigation/hooks';
 import { Button } from '../components/button';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store/store';
 import { useOrientation } from '../hooks/useOrientation';
+import { useIntl } from 'react-intl';
+import { LocalizeList } from '../components/Localize';
+import { setAppState } from '../store/app.duck';
 
 export const Welcome = (props: any) => {
   const { isForeground, isInitialized } = useSelector(
@@ -37,20 +40,31 @@ export const Welcome = (props: any) => {
   useScreenEvents(listeners, props.componentId);
 
   const orientation = useOrientation();
+  const intl = useIntl();
+  const dispatch = useDispatch();
 
   return (
     <ScrollView
       testID="rolezao"
       contentInsetAdjustmentBehavior="automatic"
-      style={{ paddingTop: Platform.OS === 'android' ? paddingTop : 0 }}
+      contentContainerStyle={{
+        paddingTop: Platform.OS === 'android' ? paddingTop : 0,
+        paddingHorizontal: orientation === 'landscape' ? paddingTop : 0,
+      }}
     >
       <View>
+        <Button title={intl.formatMessage({ id: 'i18n.lang.portuguese' })} onPress={() => dispatch(setAppState({ locale: 'pt' }))}/>
+        <Button title={intl.formatMessage({ id: 'i18n.lang.english' })} onPress={() => dispatch(setAppState({ locale: 'en' }))}/>
+        <Text>paddingTop: {paddingTop}</Text>
         <Text>orientation: {orientation}</Text>
         <Text>pressed: {pressed}</Text>
         <Text>isForeground: {String(isForeground)}</Text>
         <Text>isInitialized: {String(isInitialized)}</Text>
+        {__DEV__ && <LocalizeList />}
         <Button
-          title="Modify topbar"
+          title={intl.formatMessage({
+            id: 'screen.welcome.button.modify.topbar',
+          })}
           onPress={() => {
             Navigation.constants().then(({ topBarHeight }) => {
               setPaddingTop(topBarHeight);
