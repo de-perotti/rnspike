@@ -11,9 +11,7 @@ type ThunkApi = {
   requestId: any;
 };
 
-// Warning, timeout does not work. Don't try using it.
-// Try using cancel mechanics instead
-const DEFAULT_AXIOS_CONFIG: AxiosRequestConfig = {};
+const DEFAULT_AXIOS_CONFIG: Omit<AxiosRequestConfig, 'timeout'> = {};
 
 export function cancellableThunkRequest<T>(
   { timeout, ...config }: AxiosRequestConfig,
@@ -25,22 +23,24 @@ export function cancellableThunkRequest<T>(
     source.cancel();
   });
 
+  const coalescedConfig = {
+    ...DEFAULT_AXIOS_CONFIG,
+    ...config,
+    cancelToken: source.token,
+  };
+
   const time = setTimeout(() => {
     source.cancel();
   }, timeout);
 
-  return axios({
-    ...DEFAULT_AXIOS_CONFIG,
-    ...config,
-    cancelToken: source.token,
-  }).then((resp: AxiosResponse<T>) => {
+  return axios(coalescedConfig).then((resp: AxiosResponse<T>) => {
     clearTimeout(time);
     return resp.data;
   });
 }
 
 export function cancellableRequest<T>(
-  config: AxiosRequestConfig,
+  { timeout, ...config }: AxiosRequestConfig,
   cancelKey = CANCEL,
 ) {
   const source = axios.CancelToken.source();
@@ -51,9 +51,14 @@ export function cancellableRequest<T>(
     cancelToken: source.token,
   };
 
-  const promise = axios(coalescedConfig).then(
-    (resp: AxiosResponse<T>) => resp.data,
-  );
+  const time = setTimeout(() => {
+    source.cancel();
+  }, timeout);
+
+  const promise = axios(coalescedConfig).then((resp: AxiosResponse<T>) => {
+    clearTimeout(time);
+    return resp.data;
+  });
 
   // @ts-ignore
   promise[cancelKey] = () => source.cancel();
