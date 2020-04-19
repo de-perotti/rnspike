@@ -1,5 +1,11 @@
 export function polyfillIntl() {
-  if (typeof Intl === 'undefined' || !Intl.NumberFormat) {
+  if (typeof Intl === 'undefined') {
+    console.log('polyfilling Intl');
+    require('intl');
+  }
+
+  if (!Intl.NumberFormat) {
+    console.log('polyfilling Intl.NumberFormat');
     const IntlPolyfill = require('intl');
     Intl.NumberFormat = IntlPolyfill.NumberFormat;
     require('intl/locale-data/jsonp/pt');
@@ -7,10 +13,12 @@ export function polyfillIntl() {
   }
 
   if (!Intl.DateTimeFormat) {
+    console.log('polyfilling Intl.DateTimeFormat');
     require('date-time-format-timezone');
   }
 
   if (!Intl.PluralRules) {
+    console.log('polyfilling Intl.PluralRules');
     require('@formatjs/intl-pluralrules/polyfill');
     require('@formatjs/intl-pluralrules/dist/locale-data/pt');
     require('@formatjs/intl-pluralrules/dist/locale-data/en');
