@@ -1,2 +1,4 @@
-require('./app/polyfills/intl').polyfillIntl();
-require('./app/bootstrap').bootstrap();
+require('./app/polyfills').polyfill();
+require('./app/bootstrap')
+  .bootstrap()
+  .catch((e) => console.error('bootstrapping error', e));

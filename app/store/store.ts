@@ -3,33 +3,53 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { persistReducer, persistStore, PERSIST } from 'redux-persist';
 import createSagaMiddleware, { SagaMiddlewareOptions } from 'redux-saga';
 import { rootReducer as reducer } from './reducer';
+import { REHYDRATE } from 'redux-persist';
+import logger from 'redux-logger';
+import { rejectedRequest } from './request.slice';
 
-const persistConfig = {
-  key: 'root',
-  version: 0,
-  whitelist: [],
-  storage: AsyncStorage,
-};
+declare const window: undefined | any;
 
 function initializeStore(options?: SagaMiddlewareOptions) {
   const saga = createSagaMiddleware(options);
+
   const middleware = [
+    logger,
     saga,
     ...getDefaultMiddleware({
-      serializableCheck: { ignoredActions: [PERSIST] },
+      serializableCheck: {
+        ignoredActions: [PERSIST, REHYDRATE, rejectedRequest.type],
+      },
     }),
   ];
+
+  const enhancers: any[] = [];
+
+  if (__DEV__) {
+    if (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__) {
+      enhancers.push(window.__REDUX_DEVTOOLS_EXTENSION__());
+    }
+  }
 
   const store = {
     ...configureStore({
       middleware,
-      reducer: persistReducer(persistConfig, reducer),
-      devTools: process.env.NODE_ENV !== 'production',
+      reducer: persistReducer(
+        {
+          timeout: 0,
+          key: 'root',
+          version: 0,
+          whitelist: ['request'],
+          storage: AsyncStorage,
+        },
+        reducer,
+      ),
+      devTools: false,
+      enhancers,
     }),
     runSaga: saga.run,
   };
 
-  const persistor = persistStore(store, null);
+  const persistor = persistStore(store);
 
   return {
     store,
@@ -37,6 +57,10 @@ function initializeStore(options?: SagaMiddlewareOptions) {
   };
 }
 
-export const { store, persistor } = initializeStore();
+export const { store, persistor } = initializeStore({
+  onError(error, { sagaStack }) {
+    console.log('saga.onError', error, sagaStack);
+  },
+});
 
 export type AppState = ReturnType<typeof store.getState>;

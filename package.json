@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "cd ./android && ./gradlew app:assembleDebug && ./gradlew installDebug",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test:ios:e2e": "./bin/ios-e2e.sh",
@@ -20,7 +20,9 @@
     "@formatjs/intl-pluralrules": "~1.5.5",
     "@formatjs/intl-relativetimeformat": "~4.5.12",
     "@react-native-community/async-storage": "~1.9.0",
+    "@react-native-community/netinfo": "~5.7.1",
     "@reduxjs/toolkit": "~1.3.4",
+    "axios": "~0.19.2",
     "date-time-format-timezone": "~1.0.22",
     "intl": "~1.2.5",
     "react": "~16.11.0",
@@ -54,7 +56,7 @@
     "metro-react-native-babel-preset": "~0.58.0",
     "prettier": "~2.0.4",
     "react-test-renderer": "~16.11.0",
-    "redux-logger": "~3.0.6",
+    "redux-logger": "^3.0.6",
     "rimraf": "~3.0.2",
     "ts-jest": "~24.3.0",
     "typescript": "~3.8.3"

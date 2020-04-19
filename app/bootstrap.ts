@@ -1,6 +1,6 @@
 import { store } from './store';
 import { bootstrap as navigationBootstrap } from './navigation/bootstrap/boostrap';
-import { rootSaga } from './sagas/root';
+import { rootSaga } from './sagas/root.saga';
 import { AppState } from './store/store';
 
 export async function bootstrap() {

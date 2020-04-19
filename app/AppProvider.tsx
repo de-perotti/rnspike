@@ -10,7 +10,11 @@ const IntlProvider: FC<any> = ({ children }) => {
   const locale = useSelector((state: AppState) => state.app.locale);
 
   return (
-    <ReactIntlProvider locale={locale} messages={translationGetters[locale]()}>
+    <ReactIntlProvider
+      locale={locale}
+      key={locale}
+      messages={translationGetters[locale]()}
+    >
       {children}
     </ReactIntlProvider>
   );

@@ -13,8 +13,9 @@ import { AppState } from '../store/store';
 import { useOrientation } from '../hooks/useOrientation';
 import { useIntl } from 'react-intl';
 import { LocalizeList } from '../components/Localize';
-import { setAppState } from '../store/app.duck';
+import { setLocale } from '../store/app.slice';
 import { Languages } from '../translations';
+import { Cancel } from '../components/Cancel';
 
 export const Welcome = (props: any) => {
   const { isForeground, isInitialized } = useSelector(
@@ -29,10 +30,10 @@ export const Welcome = (props: any) => {
         setPressed((p) => p + 1);
       },
       componentDidDisappear(e: ComponentDidDisappearEvent) {
-        console.log('aaaai lmaoo disappear', e);
+        console.log('Welcome screen disappeared', e);
       },
       componentDidAppear(e: ComponentDidAppearEvent) {
-        console.log('lmao appear', e);
+        console.log('Welcome scren appeared', e);
       },
     }),
     [],
@@ -53,16 +54,15 @@ export const Welcome = (props: any) => {
         paddingHorizontal: orientation === 'landscape' ? paddingTop : 0,
       }}
     >
+      <Cancel />
       <View>
         <Button
           title={intl.formatMessage({ id: 'i18n.lang.portuguese' })}
-          onPress={() =>
-            dispatch(setAppState({ locale: Languages.PORTUGUESE }))
-          }
+          onPress={() => dispatch(setLocale(Languages.PORTUGUESE))}
         />
         <Button
           title={intl.formatMessage({ id: 'i18n.lang.english' })}
-          onPress={() => dispatch(setAppState({ locale: Languages.ENGLISH }))}
+          onPress={() => dispatch(setLocale(Languages.ENGLISH))}
         />
         <Text>paddingTop: {paddingTop}</Text>
         <Text>orientation: {orientation}</Text>
