@@ -13,13 +13,13 @@ function initializeStore(options?: SagaMiddlewareOptions) {
   const saga = createSagaMiddleware(options);
 
   const middleware = [
-    logger,
-    saga,
     ...getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [PERSIST, REHYDRATE, rejectedRequest.type],
       },
     }),
+    logger,
+    saga,
   ];
 
   const enhancers: any[] = [];

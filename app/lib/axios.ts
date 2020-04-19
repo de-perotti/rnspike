@@ -11,12 +11,12 @@ type ThunkApi = {
   requestId: any;
 };
 
-// Warning, timeout does not work. Don't tryu sing it.
+// Warning, timeout does not work. Don't try using it.
 // Try using cancel mechanics instead
 const DEFAULT_AXIOS_CONFIG: AxiosRequestConfig = {};
 
 export function cancellableThunkRequest<T>(
-  config: AxiosRequestConfig,
+  { timeout, ...config }: AxiosRequestConfig,
   thunkApi: ThunkApi,
 ) {
   const source = axios.CancelToken.source();
@@ -25,11 +25,18 @@ export function cancellableThunkRequest<T>(
     source.cancel();
   });
 
+  const time = setTimeout(() => {
+    source.cancel();
+  }, timeout);
+
   return axios({
     ...DEFAULT_AXIOS_CONFIG,
     ...config,
     cancelToken: source.token,
-  }).then((resp: AxiosResponse<T>) => resp.data);
+  }).then((resp: AxiosResponse<T>) => {
+    clearTimeout(time);
+    return resp.data;
+  });
 }
 
 export function cancellableRequest<T>(

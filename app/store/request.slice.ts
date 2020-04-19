@@ -5,6 +5,7 @@ import {
   createAction,
   createSlice,
   nanoid,
+  PayloadAction,
 } from '@reduxjs/toolkit';
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
@@ -35,7 +36,10 @@ const queueSlice = createSlice({
   name: 'queue',
   initialState: initialQueueState,
   reducers: {
-    addRequest(state, action) {
+    addRequest(
+      state,
+      action: PayloadAction<ReturnType<typeof dispatchRequest>['payload']>,
+    ) {
       const { id } = action.payload;
       state.ids.push(id);
       state.requests[id] = action.payload;
@@ -74,7 +78,17 @@ const queueSlice = createSlice({
 
 export const dispatchRequest = createAction(
   'request/dispatch',
-  ({ config, limitation, name, timeout }) => {
+  ({
+    config,
+    limitation,
+    name,
+    timeout,
+  }: {
+    config: AxiosRequestConfig;
+    limitation: RequestLimitation;
+    name: string;
+    timeout: number;
+  }) => {
     return {
       payload: {
         id: nanoid(),
