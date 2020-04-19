@@ -26,7 +26,7 @@ export const Welcome = (props: any) => {
   const listeners: EventListeners = useMemo(
     () => ({
       navigationButtonPressed(e: NavigationButtonPressedEvent) {
-        console.log('buttotn pressed', e);
+        console.log('Navigation Button pressed', e);
         setPressed((p) => p + 1);
       },
       componentDidDisappear(e: ComponentDidDisappearEvent) {

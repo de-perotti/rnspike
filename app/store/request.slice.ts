@@ -106,7 +106,15 @@ export const resolvedRequest = createAction(
 
 export const rejectedRequest = createAction(
   'request/rejected',
-  ({ name, id, error }: { name: string; id: string; error: AxiosError }) => ({
+  ({
+    name,
+    id,
+    error,
+  }: {
+    name: string;
+    id: string;
+    error: AxiosError | Error;
+  }) => ({
     payload: { name, id, error },
   }),
 );

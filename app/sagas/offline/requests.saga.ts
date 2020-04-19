@@ -13,6 +13,7 @@ import {
   join,
   flush,
   cancel,
+  cancelled,
 } from 'redux-saga/effects';
 import { channel, buffers } from 'redux-saga';
 import { cancellableRequest } from '../../lib/axios';
@@ -27,6 +28,7 @@ import {
 } from '../../store/request.slice';
 import { setOffline } from '../../store/app.slice';
 import { RequestTimedOutError } from '../../errors/RequestTimedOutError';
+import { RequestCancelledError } from '../../errors/RequestCancelledError';
 
 function removedByName(name: string) {
   return (action) =>
@@ -106,9 +108,14 @@ function* requestWorker({ payload }, reprocessing = false) {
     }
   } catch (error) {
     yield put(rejectedRequest({ name: payload.name, id: payload.id, error }));
+  } finally {
+    if (cancelled()) {
+      // Happens on takeLatest
+      const error = new RequestCancelledError(payload);
+      yield put(rejectedRequest({ name: payload.name, id: payload.id, error }));
+    }
+    yield put(removeRequestById({ id: payload.id, name: payload.name }));
   }
-
-  yield put(removeRequestById({ id: payload.id, name: payload.name }));
 }
 
 function* reprocessRequestsWorker({ maxParallelRequests }) {
@@ -186,7 +193,7 @@ export function* watchRequests() {
   );
 }
 
-export function* watch() {
+export function* watchRequestReprocess() {
   yield takeLatest(
     (action) => action.type === setOffline.type && !action.payload,
     reprocessRequestsWorker,

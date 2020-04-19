@@ -16,7 +16,7 @@ function* appChangeWorker(event: AppStates) {
       break;
 
     default:
-      console.log('unexpected payload found:', event);
+      console.log('Unexpected payload found:', event);
       break;
   }
 }
