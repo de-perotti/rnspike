@@ -87,8 +87,6 @@ function* raceRequest({ payload }) {
 }
 
 function* requestWorker({ payload }, { reprocessing = false } = {}) {
-  console.log({ payload }); // Falhando em request único
-
   try {
     if (!reprocessing) {
       yield put(addRequest(payload));

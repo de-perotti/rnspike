@@ -17,7 +17,11 @@ function* startIndependentWatchers() {
   ]);
 }
 
-function* startPersistenceDependentWatchers() {
+export function* rootSaga() {
+  const init = Date.now();
+
+  yield spawn(startIndependentWatchers);
+
   yield take(REHYDRATE);
   yield fork(watchLocalization);
   yield take(setLocale.type);
@@ -27,13 +31,6 @@ function* startPersistenceDependentWatchers() {
     fork(watchRequestReprocess, readyChannel),
     fork(watchNetInfo, readyChannel),
   ]);
-}
-
-export function* rootSaga() {
-  const init = Date.now();
-
-  yield spawn(startIndependentWatchers);
-  yield spawn(startPersistenceDependentWatchers);
 
   yield put(setInitialized(true));
 
