@@ -13,7 +13,7 @@ import { AppState } from '../store/store';
 import { useOrientation } from '../hooks/useOrientation';
 import { useIntl } from 'react-intl';
 import { LocalizeList } from '../components/Localize';
-import { setLocale } from '../store/app.slice';
+import { setLocale } from '../store/localization.slice';
 import { Languages } from '../translations';
 import { Cancel } from '../components/Cancel';
 
@@ -45,6 +45,10 @@ export const Welcome = (props: any) => {
   const intl = useIntl();
   const dispatch = useDispatch();
 
+  if (!isInitialized) {
+    return <Text>Still loading my dude. Check rootSaga for the delay.</Text>;
+  }
+
   return (
     <ScrollView
       testID="rolezao"
@@ -58,11 +62,19 @@ export const Welcome = (props: any) => {
       <View>
         <Button
           title={intl.formatMessage({ id: 'i18n.lang.portuguese' })}
-          onPress={() => dispatch(setLocale(Languages.PORTUGUESE))}
+          onPress={() =>
+            dispatch(
+              setLocale({ locale: Languages.PORTUGUESE, userDefined: true }),
+            )
+          }
         />
         <Button
           title={intl.formatMessage({ id: 'i18n.lang.english' })}
-          onPress={() => dispatch(setLocale(Languages.ENGLISH))}
+          onPress={() =>
+            dispatch(
+              setLocale({ locale: Languages.ENGLISH, userDefined: true }),
+            )
+          }
         />
         <Text>paddingTop: {paddingTop}</Text>
         <Text>orientation: {orientation}</Text>

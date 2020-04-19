@@ -1,9 +1,10 @@
 import * as RNLocalize from 'react-native-localize';
-import { takeEvery, putResolve, call } from 'redux-saga/effects';
+import { takeEvery, put, call, select } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { I18nManager } from 'react-native';
 import { fallbackLang, Languages, translationGetters } from '../translations';
-import { setLocale } from '../store/app.slice';
+import { setLocale } from '../store/localization.slice';
+import { AppState } from '../store/store';
 
 type LocalizationLanguage = {
   languageTag: Languages;
@@ -18,7 +19,12 @@ function* localizationChangedWorker() {
 
   I18nManager.forceRTL(isRTL);
 
-  yield putResolve(setLocale(languageTag));
+  const userDefined = yield select(
+    (state: AppState) => state.localization.userDefined,
+  );
+  if (!userDefined) {
+    yield put(setLocale({ locale: languageTag, userDefined: false }));
+  }
 }
 
 export function* watchLocalization() {

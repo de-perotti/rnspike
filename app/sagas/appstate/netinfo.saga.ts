@@ -1,13 +1,13 @@
 import NetInfo, { NetInfoState } from '@react-native-community/netinfo';
 import { eventChannel } from 'redux-saga';
-import { takeEvery, put } from 'redux-saga/effects';
+import { take, takeEvery, put } from 'redux-saga/effects';
 import { setOffline } from '../../store/app.slice';
 
 function* netInfoWorker({ isConnected, isInternetReachable }: NetInfoState) {
   yield put(setOffline(!isConnected || !isInternetReachable));
 }
 
-export function* watchNetInfo() {
+export function* watchNetInfo(readyChannel) {
   const chan = eventChannel((emit) => {
     // NetInfo.configure({
     //   reachabilityUrl: 'https://clients3.google.com/generate_204',
@@ -20,5 +20,6 @@ export function* watchNetInfo() {
     return NetInfo.addEventListener(emit);
   });
 
+  yield take(readyChannel);
   yield takeEvery(chan, netInfoWorker);
 }

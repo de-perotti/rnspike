@@ -7,7 +7,7 @@ import { AppState } from './store/store';
 import { translationGetters } from './translations';
 
 const IntlProvider: FC<any> = ({ children }) => {
-  const locale = useSelector((state: AppState) => state.app.locale);
+  const locale = useSelector((state: AppState) => state.localization.locale);
 
   return (
     <ReactIntlProvider

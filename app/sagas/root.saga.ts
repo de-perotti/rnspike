@@ -1,25 +1,41 @@
-import { all, take, put, fork } from 'redux-saga/effects';
+import { all, call, take, put, fork, spawn } from 'redux-saga/effects';
+import { channel, buffers } from 'redux-saga';
 import { REHYDRATE } from 'redux-persist';
 import { watchAccessibility } from './accessibility';
-import { watchAppState } from './appstate';
-import { setInitialized, setOffline, setLocale } from '../store/app.slice';
+import { watchAppState, watchNetInfo } from './appstate';
+import { setInitialized } from '../store/app.slice';
+import { setLocale } from '../store/localization.slice';
 import { watchLocalization } from './i18n.saga';
 import { watchOffline } from './offline';
 import { watchRequestReprocess } from './offline/requests.saga';
 
-export function* rootSaga() {
-  const init = Date.now();
-
+function* startIndependentWatchers() {
   yield all([
     fork(watchOffline),
-    fork(watchLocalization),
     fork(watchAppState),
     fork(watchAccessibility),
   ]);
+}
 
-  yield all([take(REHYDRATE), take(setOffline.type), take(setLocale.type)]);
+function* startPersistenceDependentWatchers() {
+  yield take(REHYDRATE);
+  yield fork(watchLocalization);
+  yield take(setLocale.type);
 
-  yield all([fork(watchRequestReprocess), put(setInitialized(true))]);
+  const readyChannel = yield call(channel, buffers.fixed(1));
+  yield all([
+    fork(watchRequestReprocess, readyChannel),
+    fork(watchNetInfo, readyChannel),
+  ]);
+}
+
+export function* rootSaga() {
+  const init = Date.now();
+
+  yield spawn(startIndependentWatchers);
+  yield spawn(startPersistenceDependentWatchers);
+
+  yield put(setInitialized(true));
 
   if (__DEV__) {
     console.log('Took', Date.now() - init, 'ms to start sagas');

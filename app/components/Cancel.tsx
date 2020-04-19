@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { useDispatchRequest } from '../hooks/useDispatchRequest';
 import * as mockApi from '../api/mockapi';
-import { removeRequestsByName, RequestLimitation } from '../store/request.slice';
+import { removeRequestsByName } from '../store/request.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store/store';
 
@@ -22,7 +22,6 @@ export const Cancel = () => {
             config: mockApi.index,
             timeout: 20000,
             name: 'Cancel',
-            limitation: RequestLimitation.LATEST,
           })
         }
       />

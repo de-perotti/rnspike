@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fallbackLang } from '../translations';
 
 const appSlice = createSlice({
   name: 'app',
@@ -8,7 +7,6 @@ const appSlice = createSlice({
     isInitialized: false,
     isForeground: false,
     isOffline: true,
-    locale: fallbackLang.languageTag,
   },
   reducers: {
     setForeground(state, action) {
@@ -16,9 +14,6 @@ const appSlice = createSlice({
     },
     setInitialized(state, action) {
       state.isInitialized = action.payload;
-    },
-    setLocale(state, action) {
-      state.locale = action.payload;
     },
     setOffline(state, action) {
       state.isOffline = action.payload;
@@ -28,5 +23,5 @@ const appSlice = createSlice({
 
 export const {
   reducer,
-  actions: { setForeground, setInitialized, setLocale, setOffline },
+  actions: { setForeground, setInitialized, setOffline },
 } = appSlice;

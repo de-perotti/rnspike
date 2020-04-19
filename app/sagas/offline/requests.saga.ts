@@ -29,6 +29,7 @@ import {
 import { setOffline } from '../../store/app.slice';
 import { RequestTimedOutError } from '../../errors/RequestTimedOutError';
 import { RequestCancelledError } from '../../errors/RequestCancelledError';
+import { AppState } from '../../store/store';
 
 function removedByName(name: string) {
   return (action) =>
@@ -85,7 +86,9 @@ function* raceRequest({ payload }) {
   };
 }
 
-function* requestWorker({ payload }, reprocessing = false) {
+function* requestWorker({ payload }, { reprocessing = false } = {}) {
+  console.log({ payload }); // Falhando em request único
+
   try {
     if (!reprocessing) {
       yield put(addRequest(payload));
@@ -109,8 +112,7 @@ function* requestWorker({ payload }, reprocessing = false) {
   } catch (error) {
     yield put(rejectedRequest({ name: payload.name, id: payload.id, error }));
   } finally {
-    if (cancelled()) {
-      // Happens on takeLatest
+    if (yield cancelled()) {
       const error = new RequestCancelledError(payload);
       yield put(rejectedRequest({ name: payload.name, id: payload.id, error }));
     }
@@ -119,7 +121,9 @@ function* requestWorker({ payload }, reprocessing = false) {
 }
 
 function* reprocessRequestsWorker({ maxParallelRequests }) {
-  const { ids, requests } = yield select((state) => state.request.queue);
+  const { ids, requests } = yield select(
+    (state: AppState) => state.request.queue,
+  );
   const chan = yield call(channel, buffers.fixed(ids.length));
 
   for (const id of ids) {
@@ -160,7 +164,11 @@ function* reprocessRequestsWorker({ maxParallelRequests }) {
       fork(function* () {
         while (true) {
           const request = yield take(chan);
-          yield call(requestWorker, { payload: request });
+          yield call(
+            requestWorker,
+            { payload: request },
+            { reprocessing: true },
+          );
         }
       }),
     ),
@@ -193,10 +201,13 @@ export function* watchRequests() {
   );
 }
 
-export function* watchRequestReprocess() {
+export function* watchRequestReprocess(readyChannel) {
   yield takeLatest(
     (action) => action.type === setOffline.type && !action.payload,
     reprocessRequestsWorker,
     { maxParallelRequests: 5 },
   );
+
+  yield put(readyChannel, { ready: true });
+  yield call([readyChannel, readyChannel.close]);
 }

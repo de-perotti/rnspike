@@ -38,7 +38,7 @@ function initializeStore(options?: SagaMiddlewareOptions) {
           timeout: 0,
           key: 'root',
           version: 0,
-          whitelist: ['request'],
+          whitelist: ['request', 'localization'],
           storage: AsyncStorage,
         },
         reducer,
