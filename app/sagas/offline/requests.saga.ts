@@ -4,7 +4,6 @@ import {
   take,
   race,
   takeEvery,
-  delay,
   takeLatest,
   takeLeading,
   put,

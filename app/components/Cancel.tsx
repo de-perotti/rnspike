@@ -27,10 +27,7 @@ const anotherThunk = createAsyncThunk(
   ) => {
     try {
       thunkAPI.dispatch(addRequest({ ...args, id: thunkAPI.requestId }));
-      const { title } = await cancellableThunkRequest(
-        args.config,
-        thunkAPI,
-      );
+      const { title } = await cancellableThunkRequest(args.config, thunkAPI);
       thunkAPI.dispatch(
         removeRequestById({ name: args.name, id: thunkAPI.requestId }),
       );
