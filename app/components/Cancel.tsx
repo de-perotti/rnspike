@@ -13,6 +13,7 @@ import { AppState } from '../store/store';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { cancellableThunkRequest, axios } from '../lib/axios';
 import { AxiosError } from 'axios';
+import { Messages } from '../errors/constants';
 
 function isAxiosError(e: any): e is AxiosError {
   return e.isAxiosError;
@@ -27,7 +28,7 @@ const anotherThunk = createAsyncThunk(
     try {
       thunkAPI.dispatch(addRequest({ ...args, id: thunkAPI.requestId }));
       const { title } = await cancellableThunkRequest(
-        { ...args.config, timeout: args.timeout },
+        args.config,
         thunkAPI,
       );
       thunkAPI.dispatch(
@@ -35,7 +36,6 @@ const anotherThunk = createAsyncThunk(
       );
       return title;
     } catch (e) {
-      console.log('anotherThunk rolezao', e);
       if (
         !(
           isAxiosError(e) &&
@@ -48,7 +48,22 @@ const anotherThunk = createAsyncThunk(
       }
 
       if (axios.isCancel(e)) {
-        console.log('i know we cancelled');
+        switch (e.message) {
+          case Messages.CANCELLED:
+            console.log('i know we cancelled', e);
+            break;
+
+          case Messages.TIMEDOUT:
+            console.log('i know we timedout', e);
+            break;
+
+          case Messages.ABORTED:
+            console.log('i know we aborted', e);
+            break;
+
+          default:
+            console.log('request got cancelled but in a non expected way', e);
+        }
       }
 
       return null;
@@ -73,7 +88,6 @@ export const Cancel = () => {
           onPress={() =>
             request({
               config: mockApi.index,
-              timeout: 20000,
               name: 'Cancel',
             })
           }
@@ -94,7 +108,6 @@ export const Cancel = () => {
             setLoadingThunk(true);
             promise.current = dispatch(
               anotherThunk({
-                timeout: 20000,
                 name: 'ROLE',
                 limitation: RequestLimitation.NONE,
                 config: mockApi.index,

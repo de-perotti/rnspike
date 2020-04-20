@@ -30,7 +30,7 @@ function* localizationChangedWorker() {
 export function* watchLocalization() {
   const chan = eventChannel((emit) => {
     RNLocalize.addEventListener('change', emit);
-    return () => RNLocalize.addEventListener('change', emit);
+    return () => RNLocalize.removeEventListener('change', emit);
   });
 
   // Needs to trigger once

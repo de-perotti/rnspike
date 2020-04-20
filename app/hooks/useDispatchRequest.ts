@@ -11,14 +11,12 @@ export function useDispatchRequest() {
       config,
       limitation = RequestLimitation.NONE,
       name,
-      timeout,
     }: {
       config: AxiosRequestConfig;
       limitation?: RequestLimitation;
       name: string;
-      timeout?: number;
     }) => {
-      dispatch(dispatchRequest({ config, limitation, name, timeout }));
+      dispatch(dispatchRequest({ config, limitation, name }));
     },
     [dispatch],
   );

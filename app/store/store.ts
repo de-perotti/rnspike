@@ -35,7 +35,6 @@ function initializeStore(options?: SagaMiddlewareOptions) {
       middleware,
       reducer: persistReducer(
         {
-          timeout: 0,
           key: 'root',
           version: 0,
           whitelist: ['request', 'localization'],

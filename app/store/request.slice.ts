@@ -1,4 +1,3 @@
-import toFinite from 'lodash/toFinite';
 import omit from 'lodash/omit';
 import {
   combineReducers,
@@ -82,12 +81,10 @@ export const dispatchRequest = createAction(
     config,
     limitation,
     name,
-    timeout,
   }: {
     config: AxiosRequestConfig;
     limitation: RequestLimitation;
     name: string;
-    timeout: number;
   }) => {
     return {
       payload: {
@@ -95,7 +92,6 @@ export const dispatchRequest = createAction(
         name,
         config,
         limitation,
-        timeout: toFinite(timeout),
       },
       meta: {},
       error: null,

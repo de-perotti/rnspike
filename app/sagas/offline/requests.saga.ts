@@ -27,7 +27,6 @@ import {
   dispatchRequest,
 } from '../../store/request.slice';
 import { setOffline } from '../../store/app.slice';
-import { RequestTimedOutError } from '../../errors/RequestTimedOutError';
 import { RequestCancelledError } from '../../errors/RequestCancelledError';
 import { AppState } from '../../store/store';
 
@@ -46,7 +45,6 @@ function removedByIdAndName(id: string, name: string) {
 function* raceRequest({ payload }) {
   const {
     response,
-    timedOut,
     cancelledByName,
     cancelledById,
     wentOffline,
@@ -54,7 +52,6 @@ function* raceRequest({ payload }) {
     alreadyResolved,
   } = yield race({
     response: call(cancellableRequest, payload.config),
-    timedOut: delay(payload.timeout || 10000),
     cancelledByName: take(removedByName(payload.name)),
     cancelledById: take(removedByIdAndName(payload.id, payload.name)),
     wentOffline: take(
@@ -81,7 +78,6 @@ function* raceRequest({ payload }) {
 
   return {
     response,
-    timedOut,
     canSkip,
   };
 }
@@ -92,14 +88,10 @@ function* requestWorker({ payload }, { reprocessing = false } = {}) {
       yield put(addRequest(payload));
     }
 
-    const { response, timedOut, canSkip } = yield raceRequest({ payload });
+    const { response, canSkip } = yield raceRequest({ payload });
 
     if (canSkip) {
       return;
-    }
-
-    if (timedOut) {
-      throw new RequestTimedOutError(payload);
     }
 
     if (response) {

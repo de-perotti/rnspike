@@ -3,6 +3,7 @@ import * as RNLocalize from 'react-native-localize';
 import { Text } from 'react-native';
 import { useIntl } from 'react-intl';
 import { Button } from './button';
+import { translationGetters } from '../translations';
 
 const PRESSES_TO_SHOW = 5;
 
@@ -56,7 +57,7 @@ export const LocalizeList = () => {
         ['usesMetricSystem', RNLocalize.usesMetricSystem()],
         [
           'findBestAvailableLanguage',
-          RNLocalize.findBestAvailableLanguage(['pt']),
+          RNLocalize.findBestAvailableLanguage(Object.keys(translationGetters)),
         ],
       ].map(([fn, child], index) => (
         <Text key={index}>

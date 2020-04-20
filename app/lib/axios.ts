@@ -1,5 +1,7 @@
+import toFinite from 'lodash/toFinite';
 import { CANCEL } from 'redux-saga';
 import axiosOriginal, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Messages } from '../errors/constants';
 
 type ThunkApi = {
   // https://redux-toolkit.js.org/api/createAsyncThunk#payloadcreator
@@ -11,7 +13,19 @@ type ThunkApi = {
   requestId: any;
 };
 
+const MAX_TIMEOUT_IN_MS = 10000;
+
 const DEFAULT_AXIOS_CONFIG: Omit<AxiosRequestConfig, 'timeout'> = {};
+
+function getTimeout(timeout?: number) {
+  const numberTimeout = toFinite(timeout);
+
+  if (numberTimeout !== 0 && numberTimeout <= MAX_TIMEOUT_IN_MS) {
+    return timeout;
+  }
+
+  return MAX_TIMEOUT_IN_MS;
+}
 
 export function cancellableThunkRequest<T>(
   { timeout, ...config }: AxiosRequestConfig,
@@ -20,7 +34,7 @@ export function cancellableThunkRequest<T>(
   const source = axios.CancelToken.source();
 
   thunkApi.signal.addEventListener('abort', () => {
-    source.cancel();
+    source.cancel(Messages.ABORTED);
   });
 
   const coalescedConfig = {
@@ -30,8 +44,8 @@ export function cancellableThunkRequest<T>(
   };
 
   const time = setTimeout(() => {
-    source.cancel();
-  }, timeout);
+    source.cancel(Messages.TIMEDOUT);
+  }, getTimeout(timeout));
 
   return axios(coalescedConfig).then((resp: AxiosResponse<T>) => {
     clearTimeout(time);
@@ -52,8 +66,8 @@ export function cancellableRequest<T>(
   };
 
   const time = setTimeout(() => {
-    source.cancel();
-  }, timeout);
+    source.cancel(Messages.TIMEDOUT);
+  }, getTimeout(timeout));
 
   const promise = axios(coalescedConfig).then((resp: AxiosResponse<T>) => {
     clearTimeout(time);
@@ -61,7 +75,7 @@ export function cancellableRequest<T>(
   });
 
   // @ts-ignore
-  promise[cancelKey] = () => source.cancel();
+  promise[cancelKey] = () => source.cancel(Messages.CANCELLED);
 
   return promise;
 }

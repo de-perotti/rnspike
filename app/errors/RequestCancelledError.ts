@@ -8,7 +8,6 @@ export class RequestCancelledError extends Error {
       name: string;
       config: AxiosRequestConfig;
       limitation: RequestLimitation;
-      timeout: number;
     },
     message?: string,
   ) {
