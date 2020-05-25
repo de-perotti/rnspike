@@ -1,13 +1,8 @@
 export function polyfillIntl() {
-  if (typeof Intl === 'undefined') {
+  if (typeof Intl === 'undefined' || !Intl.NumberFormat) {
     console.log('polyfilling Intl');
-    require('intl');
-  }
-
-  if (!Intl.NumberFormat) {
-    console.log('polyfilling Intl.NumberFormat');
     const IntlPolyfill = require('intl');
-    Intl.NumberFormat = IntlPolyfill.NumberFormat;
+    global.Intl.NumberFormat = IntlPolyfill.NumberFormat;
     require('intl/locale-data/jsonp/pt');
     require('intl/locale-data/jsonp/en');
   }
