@@ -1,18 +1,17 @@
 import { Navigation } from 'react-native-navigation';
-import { Colors } from '../../theme/tokens/colors';
 
 export function registerNavigationTheme() {
   Navigation.setDefaultOptions({
     statusBar: {
       visible: true,
-      backgroundColor: Colors.primary,
+      backgroundColor: '#ffffff',
     },
     topBar: {
       title: {
-        color: Colors.white,
+        color: '#000000',
       },
       background: {
-        color: Colors.primary,
+        color: '#ffffff',
       },
     },
     bottomTab: {

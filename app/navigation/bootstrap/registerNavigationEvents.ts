@@ -4,7 +4,7 @@ import { registerNavigationTheme } from './registerNavigationTheme';
 
 async function onAppLaunched() {
   registerNavigationTheme();
-  Navigation.setRoot(DefaultRoot);
+  await Navigation.setRoot(DefaultRoot);
 }
 
 export async function registerNavigationEvents() {
